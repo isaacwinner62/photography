@@ -1,8 +1,7 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
+import type React from "react"
+
 import {
   Camera,
   Heart,
@@ -28,6 +27,71 @@ import Image from "next/image"
 import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
 import { useState, useEffect } from "react"
+
+// Custom Button Component
+const Button = ({
+  children,
+  className = "",
+  variant = "default",
+  size = "default",
+  onClick,
+  ...props
+}: {
+  children: React.ReactNode
+  className?: string
+  variant?: "default" | "outline"
+  size?: "default" | "lg" | "icon"
+  onClick?: () => void
+  [key: string]: any
+}) => {
+  const baseClasses =
+    "inline-flex items-center justify-center rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+
+  const variants = {
+    default: "bg-blue-600 text-white hover:bg-blue-700 shadow-lg hover:shadow-xl",
+    outline: "border border-gray-600 text-gray-300 hover:bg-gray-700/50 hover:text-white",
+  }
+
+  const sizes = {
+    default: "px-4 py-2 text-sm",
+    lg: "px-6 py-3 text-base",
+    icon: "p-2",
+  }
+
+  return (
+    <button className={`${baseClasses} ${variants[variant]} ${sizes[size]} ${className}`} onClick={onClick} {...props}>
+      {children}
+    </button>
+  )
+}
+
+// Custom Card Components
+const Card = ({ children, className = "" }: { children: React.ReactNode; className?: string }) => (
+  <div className={`rounded-xl border border-gray-700/50 bg-gray-800/50 backdrop-blur-sm shadow-lg ${className}`}>
+    {children}
+  </div>
+)
+
+const CardHeader = ({ children, className = "" }: { children: React.ReactNode; className?: string }) => (
+  <div className={`p-6 pb-4 ${className}`}>{children}</div>
+)
+
+const CardContent = ({ children, className = "" }: { children: React.ReactNode; className?: string }) => (
+  <div className={`p-6 pt-0 ${className}`}>{children}</div>
+)
+
+const CardTitle = ({ children, className = "" }: { children: React.ReactNode; className?: string }) => (
+  <h3 className={`text-xl font-semibold text-white ${className}`}>{children}</h3>
+)
+
+const CardDescription = ({ children, className = "" }: { children: React.ReactNode; className?: string }) => (
+  <p className={`text-sm text-gray-400 ${className}`}>{children}</p>
+)
+
+// Custom Badge Component
+const Badge = ({ children, className = "" }: { children: React.ReactNode; className?: string }) => (
+  <span className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-medium ${className}`}>{children}</span>
+)
 
 const testimonials = [
   {
@@ -164,7 +228,7 @@ export default function Component() {
         animate={{ y: 0 }}
         transition={{ duration: 0.8 }}
       >
-        <div className="container flex h-16 items-center justify-between">
+        <div className="container mx-auto px-4 flex h-16 items-center justify-between">
           <motion.div className="flex items-center space-x-2" whileHover={{ scale: 1.05 }}>
             <Camera className="h-8 w-8 text-blue-400" />
             <span className="text-xl font-bold text-white">LensCapture</span>
@@ -195,7 +259,7 @@ export default function Component() {
       <main className="flex-1 relative">
         {/* Hero Section */}
         <section id="home" className="relative w-full py-12 md:py-24 lg:py-32 xl:py-48 overflow-hidden">
-          <div className="container px-4 md:px-6 relative z-10">
+          <div className="container mx-auto px-4 md:px-6 relative z-10">
             <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center">
               <motion.div
                 className="flex flex-col justify-center space-y-6 relative z-20"
@@ -331,7 +395,7 @@ export default function Component() {
         {/* Services Section */}
         <section id="services" className="w-full py-12 md:py-24 lg:py-32 relative">
           <div className="absolute inset-0 bg-gradient-to-r from-gray-800/50 to-slate-800/50" />
-          <div className="container px-4 md:px-6 relative z-10">
+          <div className="container mx-auto px-4 md:px-6 relative z-10">
             <motion.div
               className="flex flex-col items-center justify-center space-y-4 text-center"
               initial={{ opacity: 0, y: 50 }}
@@ -340,7 +404,7 @@ export default function Component() {
               viewport={{ once: true }}
             >
               <div className="space-y-4">
-                <Badge variant="secondary" className="bg-blue-500/20 text-blue-300 border-blue-500/30 px-4 py-2">
+                <Badge className="bg-blue-500/20 text-blue-300 border border-blue-500/30 px-4 py-2">
                   Photography Services
                 </Badge>
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-white font-['Inter']">
@@ -419,7 +483,7 @@ export default function Component() {
 
         {/* Infinite Sliding Gallery Section */}
         <section id="gallery" className="w-full py-12 md:py-24 lg:py-32 relative overflow-hidden bg-gray-800/30">
-          <div className="container px-4 md:px-6 relative z-10">
+          <div className="container mx-auto px-4 md:px-6 relative z-10">
             <motion.div
               className="flex flex-col items-center justify-center space-y-4 text-center mb-12"
               initial={{ opacity: 0, y: 50 }}
@@ -427,7 +491,7 @@ export default function Component() {
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
             >
-              <Badge variant="secondary" className="bg-slate-500/20 text-slate-300 border-slate-500/30 px-4 py-2">
+              <Badge className="bg-slate-500/20 text-slate-300 border border-slate-500/30 px-4 py-2">
                 Portfolio Gallery
               </Badge>
               <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-white font-['Inter']">
@@ -572,7 +636,7 @@ export default function Component() {
         {/* Testimonials Carousel */}
         <section id="testimonials" className="w-full py-12 md:py-24 lg:py-32 relative">
           <div className="absolute inset-0 bg-gradient-to-r from-slate-800/50 to-gray-800/50" />
-          <div className="container px-4 md:px-6 relative z-10">
+          <div className="container mx-auto px-4 md:px-6 relative z-10">
             <motion.div
               className="flex flex-col items-center justify-center space-y-4 text-center mb-12"
               initial={{ opacity: 0, y: 50 }}
@@ -580,9 +644,7 @@ export default function Component() {
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
             >
-              <Badge variant="secondary" className="bg-gray-500/20 text-gray-300 border-gray-500/30 px-4 py-2">
-                Client Love
-              </Badge>
+              <Badge className="bg-gray-500/20 text-gray-300 border border-gray-500/30 px-4 py-2">Client Love</Badge>
               <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-white font-['Inter']">
                 What My
                 <span className="text-blue-400"> Clients Say</span>
@@ -708,7 +770,7 @@ export default function Component() {
 
         {/* Enhanced Pricing Section */}
         <section id="pricing" className="w-full py-12 md:py-24 lg:py-32 relative">
-          <div className="container px-4 md:px-6 relative z-10">
+          <div className="container mx-auto px-4 md:px-6 relative z-10">
             <motion.div
               className="flex flex-col items-center justify-center space-y-4 text-center mb-12"
               initial={{ opacity: 0, y: 50 }}
@@ -716,7 +778,7 @@ export default function Component() {
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
             >
-              <Badge variant="secondary" className="bg-slate-500/20 text-slate-300 border-slate-500/30 px-4 py-2">
+              <Badge className="bg-slate-500/20 text-slate-300 border border-slate-500/30 px-4 py-2">
                 Photography Packages
               </Badge>
               <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-white font-['Inter']">
@@ -833,7 +895,7 @@ export default function Component() {
           {/* Glass Effect Overlay */}
           <div className="absolute inset-0 backdrop-blur-sm bg-gray-900/20" />
 
-          <div className="container px-4 md:px-6 relative z-10">
+          <div className="container mx-auto px-4 md:px-6 relative z-10">
             <motion.div
               className="flex flex-col items-center justify-center space-y-6 text-center"
               initial={{ opacity: 0, y: 50 }}
@@ -911,7 +973,7 @@ export default function Component() {
         id="contact"
         className="w-full py-12 bg-gradient-to-r from-gray-900 via-slate-900 to-gray-900 border-t border-gray-700"
       >
-        <div className="container px-4 md:px-6">
+        <div className="container mx-auto px-4 md:px-6">
           <div className="grid gap-8 lg:grid-cols-4">
             <motion.div
               className="space-y-4"
